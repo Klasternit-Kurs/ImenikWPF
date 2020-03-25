@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Imenik
 {
+	[Serializable]
 	public class Osoba
 	{
 		public string Ime { get; set; }

@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Collections.ObjectModel;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Imenik
 {
@@ -27,6 +29,15 @@ namespace Imenik
 		public MainWindow()
 		{
 			InitializeComponent();
+			if (File.Exists("osobe.dat"))
+			{
+				BinaryFormatter bf = new BinaryFormatter();
+				using (FileStream fs = new FileStream("osobe.dat", FileMode.Open, FileAccess.Read))
+				{
+					listaO = bf.Deserialize(fs) as ObservableCollection<Osoba>;
+				}
+			}
+
 			dg.ItemsSource = listaO;
 		}
 
@@ -38,6 +49,33 @@ namespace Imenik
 			{
 				listaO.Add(oE.DataContext as Osoba);
 			}
+		}
+
+		private void Brisanje(object sender, RoutedEventArgs e)
+		{
+			if (dg.SelectedItem != null)
+			{
+				List<Osoba> zaBrisanje = new List<Osoba>();
+				foreach (Osoba selektovano in dg.SelectedItems)
+				{ 
+					zaBrisanje.Add(selektovano);
+				}
+
+				foreach (Osoba o in zaBrisanje)
+				{
+					listaO.Remove(o);
+				}
+			}
+		}
+
+		private void ZatvaramSe(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+			BinaryFormatter bf = new BinaryFormatter();
+			using (FileStream kaFajlu = new FileStream("osobe.dat", FileMode.Create, FileAccess.Write))
+			{
+				bf.Serialize(kaFajlu, listaO);
+			}
+			File.Encrypt("osobe.dat");
 		}
 	}
 }

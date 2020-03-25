@@ -5,12 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Imenik"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800" Closing="ZatvaramSe">
 	<DockPanel>
 		<StackPanel DockPanel.Dock="Right" Width="100" VerticalAlignment="Center">
 			<Button Content="Dodaj" Click="Dodavanje"/>
 			<Button Content="Izmeni" Margin="0 50"/>
-			<Button Content="Obrisi"/>
+			<Button Content="Obrisi" Click="Brisanje"/>
 		</StackPanel>
 		<StackPanel DockPanel.Dock="Top" Orientation="Horizontal" HorizontalAlignment="Center">
 			<Label Content="Pretraga: "/>
