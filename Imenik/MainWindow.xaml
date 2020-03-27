@@ -9,13 +9,13 @@
 	<DockPanel>
 		<StackPanel DockPanel.Dock="Right" Width="100" VerticalAlignment="Center">
 			<Button Content="Dodaj" Click="Dodavanje"/>
-			<Button Content="Izmeni" Margin="0 50"/>
+			<Button Name="izm" Content="Izmeni" Margin="0 50" Click="Izmeni"/>
 			<Button Content="Obrisi" Click="Brisanje"/>
 		</StackPanel>
 		<StackPanel DockPanel.Dock="Top" Orientation="Horizontal" HorizontalAlignment="Center">
 			<Label Content="Pretraga: "/>
-			<TextBox  Width="500"/>
+			<TextBox Text="{Binding Pretraga, UpdateSourceTrigger=PropertyChanged}" Width="500"/>
 		</StackPanel>
-		<DataGrid Name="dg" ColumnWidth="*" IsReadOnly="True"/>
+		<DataGrid Name="dg" ColumnWidth="*" IsReadOnly="True" SelectionChanged="PromenaSelekcije"/>
 	</DockPanel>
 </Window>

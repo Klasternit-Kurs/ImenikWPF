@@ -25,10 +25,39 @@ namespace Imenik
 	public partial class MainWindow : Window
 	{
 		public ObservableCollection<Osoba> listaO = new ObservableCollection<Osoba>();
+		private string pretraga;
+		public string Pretraga 
+		{ 
+			get
+			{
+				return pretraga;
+			}
+			set
+			{ 
+				pretraga = value;
+				if (!(string.IsNullOrEmpty(pretraga) || string.IsNullOrWhiteSpace(pretraga)))
+				{
+					ObservableCollection<Osoba> rezultat = new ObservableCollection<Osoba>();
+					foreach (Osoba o in listaO)
+					{
+						if ( (o.Ime != null && o.Ime.ToLower().Contains(pretraga.ToLower())) || (o.Prezime != null && o.Prezime.ToLower().Contains(pretraga.ToLower())))
+						{
+							rezultat.Add(o);
+						}
+					}
+					dg.ItemsSource = rezultat;
+				}
+				else
+				{
+					dg.ItemsSource = listaO;
+				}
+			}
+		}
 
 		public MainWindow()
 		{
 			InitializeComponent();
+			DataContext = this;
 			if (File.Exists("osobe.dat"))
 			{
 				BinaryFormatter bf = new BinaryFormatter();
@@ -57,7 +86,7 @@ namespace Imenik
 			{
 				List<Osoba> zaBrisanje = new List<Osoba>();
 				foreach (Osoba selektovano in dg.SelectedItems)
-				{ 
+				{
 					zaBrisanje.Add(selektovano);
 				}
 
@@ -77,5 +106,29 @@ namespace Imenik
 			}
 			File.Encrypt("osobe.dat");
 		}
+
+		private void Izmeni(object sender, RoutedEventArgs e)
+		{
+			if (dg.SelectedItem != null)
+			{
+				OsobeEditor oE = new OsobeEditor();
+				oE.Owner = this;
+				oE.DataContext = dg.SelectedItem;
+				oE.ShowDialog();
+			}
+		}
+
+		private void PromenaSelekcije(object sender, SelectionChangedEventArgs e)
+		{
+			if (dg.SelectedItems.Count == 1)
+			{
+				izm.IsEnabled = true;
+			} else
+			{
+				izm.IsEnabled = false;
+			}
+		}
+		
+		
 	}
 }
